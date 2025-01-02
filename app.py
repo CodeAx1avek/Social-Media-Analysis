@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import requests
+tokenhere = "AstraCS:PGOOQscOxwyufewPhszPEZzI:c18c61ce5732e60627f1fcf40fe935801fb49edd883ab1c489b9a33db69b351b"
 import csv
 
 app = Flask(__name__)
@@ -75,7 +76,6 @@ def read_csv(file_path):
     except FileNotFoundError:
         print(f"CSV file not found: {file_path}")
         return data
-tokenhere = "AstraCS:PGOOQscOxwyufewPhszPEZzI:c18c61ce5732e60627f1fcf40fe935801fb49edd883ab1c489b9a33db69b351b"
 @app.route('/')
 def home():
     csv_data = read_csv('social_media_data.csv')
