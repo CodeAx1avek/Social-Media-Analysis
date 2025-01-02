@@ -79,12 +79,15 @@ def read_csv(file_path):
 @app.route('/')
 def home():
     csv_data = read_csv('social_media_data.csv')
-    return render_template('templates/index.html', 
-                       post_types=csv_data['labels'], 
-                       likes_data=csv_data['likes'], 
-                       shares_data=csv_data['shares'], 
-                       comments_data=csv_data['comments'])
+    return render_template('index.html', 
+                           post_types=csv_data['labels'], 
+                           likes_data=csv_data['likes'], 
+                           shares_data=csv_data['shares'], 
+                           comments_data=csv_data['comments'])
 
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
