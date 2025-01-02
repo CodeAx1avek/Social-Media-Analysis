@@ -7,7 +7,7 @@ app = Flask(__name__)
 BASE_API_URL = "https://api.langflow.astra.datastax.com"
 LANGFLOW_ID = "a50920d4-b15d-4097-85c4-0678a1b42305"
 ENDPOINT = "socialendpoint"
-APPLICATION_TOKEN = "AstraCS:PGOOQscOxwyufewPhszPEZzI:c18c61ce5732e60627f1fcf40fe935801fb49edd883ab1c489b9a33db69b351b"
+APPLICATION_TOKEN = tokenhere
 
 def run_flow(message: str, endpoint: str = ENDPOINT, output_type: str = "chat", input_type: str = "chat", tweaks: dict = None) -> dict:
     api_url = f"{BASE_API_URL}/lf/{LANGFLOW_ID}/api/v1/run/{endpoint}"
@@ -75,7 +75,7 @@ def read_csv(file_path):
     except FileNotFoundError:
         print(f"CSV file not found: {file_path}")
         return data
-
+tokenhere = "AstraCS:PGOOQscOxwyufewPhszPEZzI:c18c61ce5732e60627f1fcf40fe935801fb49edd883ab1c489b9a33db69b351b"
 @app.route('/')
 def home():
     csv_data = read_csv('social_media_data.csv')
