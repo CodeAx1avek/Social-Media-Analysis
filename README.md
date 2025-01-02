@@ -55,13 +55,13 @@ How to Use
 
 To get started, clone this repository to your local machine:
 
-git clone https://github.com/your-username/social-media-performance-analysis.git
+[git clone https://github.com/your-username/social-media-performance-analysis.git](https://github.com/CodeAx1avek/Social-Media-Analysis.git)
 
 2. Install Dependencies
 
 Install the required dependencies for the project. If you're using Python for the backend (e.g., Flask or Django), you can install the necessary libraries:
 
-cd social-media-performance-analysis
+cd Social-Media-Analysis 
 pip install -r requirements.txt
 
 3. Set Up DataStax Astra DB
@@ -69,8 +69,9 @@ pip install -r requirements.txt
     Create an account at DataStax Astra.
     Set up a new database and download the secure connect bundle.
     Update the database credentials and connection details in your configuration file.
+    Use langflow api
 
-4. Run the Application
+5. Run the Application
 
 Run the app locally using the following commands:
 
@@ -78,11 +79,11 @@ Run the app locally using the following commands:
 
 flask run
 
-    For Django:
+    Or:
 
-python manage.py runserver
+python app.py
 
-The app will be accessible at http://localhost:5000 or your Django equivalent.
+The app will be accessible at http://localhost:5000.
 5. Interact with the Web Interface
 
 The web interface allows users to:
@@ -107,10 +108,7 @@ Project Links
 
     GitHub Repository
     Google Drive Link (if applicable for code ZIP file)
-
-License
-
-This project is licensed under the MIT License.
+    
 Conclusion
 
 This project demonstrates the power of combining data storage, workflow automation, and AI insights to help social media managers and content creators optimize their engagement strategies. The analysis and insights generated from this project can guide content creators in making data-driven decisions to boost engagement and grow their social media presence.
