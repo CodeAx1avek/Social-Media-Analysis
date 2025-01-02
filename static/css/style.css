@@ -358,3 +358,95 @@ footer {
 }
 
 
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 14px; /* Adjust font size for readability */
+    }
+
+    header {
+        margin: 10px 20px; /* Reduce margins */
+        padding: 10px 20px; /* Adjust padding */
+        height: auto; /* Allow header height to adapt */
+        display: flex; /* Use flexbox for alignment */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+        text-align: center; /* Ensure multiline text is centered */
+    }
+    
+    header h1 {
+        font-size: 24px; /* Scale down header font size */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove unnecessary padding */
+    }
+
+    .container {
+        padding: 10px; /* Reduce padding for better fit */
+    }
+
+    .chat-container {
+        max-width: 100%; /* Take full width of mobile screens */
+        height: 60vh; /* Adjust height for smaller screens */
+        margin: 0 auto; /* Center the container */
+    }
+
+    .chat-box {
+        padding: 10px; /* Reduce padding */
+        max-height: 50vh; /* Limit height */
+    }
+
+    .input-container {
+        flex-direction: column; /* Stack input and button vertically */
+        padding: 5px;
+    }
+
+    .input-container input {
+        width: 100%; /* Take full width */
+        margin-bottom: 10px; /* Add space between input and button */
+    }
+
+    .send-btn {
+        width: 100%; /* Full width button */
+        padding: 10px;
+    }
+
+    .chart-wrapper {
+        grid-template-columns: 1fr; /* Single column for charts */
+        gap: 20px; /* Reduce space between charts */
+        margin: 10px 20px; /* Reduce margins */
+    }
+
+    .chart-container {
+        padding: 10px; /* Adjust padding */
+    }
+
+    #combinedPieChart {
+        width: 80%; /* Adjust size for mobile */
+        height: auto;
+    }
+
+    footer {
+        padding: 10px; /* Adjust padding */
+        font-size: 12px; /* Smaller text */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    header {
+        font-size: 12px; /* Even smaller font for very small screens */
+    }
+
+    .chat-container {
+        height: 50vh; /* Reduce height for extra small screens */
+    }
+
+    .input-container {
+        padding: 5px;
+    }
+
+    .send-btn {
+        font-size: 14px; /* Smaller font size for button */
+    }
+}
