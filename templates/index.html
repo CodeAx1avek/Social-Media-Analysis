@@ -6,127 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Media Analyzer</title>
     <link rel="icon" href="https://via.placeholder.com/16">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
 
-        .navbar {
-            margin-bottom: 30px;
-        }
-
-        .chat-container {
-            width: 100%;
-            max-width: 500px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            height: 50vh;
-        }
-
-        .chat-box {
-            flex-grow: 1;
-            padding: 15px;
-            overflow-y: scroll;
-            background: #fafafa;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .message {
-            margin: 10px 0;
-            padding: 12px 20px;
-            border-radius: 15px;
-            max-width: 75%;
-            word-wrap: break-word;
-        }
-
-        .bot-message {
-            background-color: #e1f5fe;
-            color: #01579b;
-            margin-left: 20px;
-            align-self: flex-start;
-        }
-
-        .user-message {
-            background-color: #bbdefb;
-            color: #1e3c72;
-            margin-right: 20px;
-            align-self: flex-end;
-        }
-
-        .input-container {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            background: #fff;
-        }
-
-        .input-container input {
-            flex-grow: 1;
-            padding: 10px;
-            font-size: 14px;
-            border: none;
-            border-radius: 20px;
-            outline: none;
-        }
-
-        .send-btn {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        .send-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .typing-indicator {
-            font-style: italic;
-            color: #aaa;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #f8f9fa;
-        }
-    </style>
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Social Media Analyzer</a>
-    </nav>
+    <header>
+		<nav>
+			<h1> Social Media Analyzer </h1>
+		</nav>
+	</header>
 
     <div class="container">
-        <!-- Graphs Section -->
-        <div class="row">
-            <div class="col-md-6">
-                <canvas id="likesChart"></canvas>
-            </div>
-            <div class="col-md-6">
-                <canvas id="sharesChart"></canvas>
-            </div>
-            <div class="col-md-6">
-                <canvas id="commentsChart"></canvas>
-            </div>
-        </div>
 
         <!-- Chatbot Section -->
-        <div class="chat-container mt-5">
+        <div class="chat-container ">
             <div class="chat-box" id="chat-box">
                 <div class="message bot-message">Hello! How can I assist you today?</div>
             </div>
@@ -136,89 +35,246 @@
                 <button class="send-btn" id="send-btn">Send</button>
             </div>
         </div>
+
+        <div id="lottie-container" class="lottie-container"></div>
     </div>
 
+        <!-- Graphs Section -->
+        <div class="chart-wrapper">
+            <div class="chart-container">
+                <canvas id="likesChart"></canvas>
+            </div>
+        
+            <div class="chart-container">
+                <canvas id="sharesChart"></canvas>
+            </div>
+        
+            <div class="chart-container">
+                <canvas id="commentsChart"></canvas>
+            </div>
+        
+            <div class="chart-container">
+                <canvas id="combinedPieChart"></canvas>
+            </div>
+        </div>
+        
+        
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Social Media Analyzer. All rights reserved.</p>
     </footer>
 
+
+
+
+
     <!-- JavaScript -->
     <script>
-        // Safely pass the data to JavaScript
-        const postTypes = JSON.parse('{{ post_types|tojson|safe }}');
-        const likesData = JSON.parse('{{ likes_data|tojson|safe }}');
-        const sharesData = JSON.parse('{{ shares_data|tojson|safe }}');
-        const commentsData = JSON.parse('{{ comments_data|tojson|safe }}');
+        // Fetch colors from CSS variables
+    const rootStyles = getComputedStyle(document.documentElement);
+    const chartBlue = rootStyles.getPropertyValue('--chart-blue').trim();
+    const chartBlueBorder = rootStyles.getPropertyValue('--chart-blue-border').trim();
+    const chartOrange = rootStyles.getPropertyValue('--chart-orange').trim();
+    const chartOrangeBorder = rootStyles.getPropertyValue('--chart-orange-border').trim();
+    const chartGreen = rootStyles.getPropertyValue('--chart-green').trim();
+    const chartGreenBorder = rootStyles.getPropertyValue('--chart-green-border').trim();
+    const chartTooltipBackground = rootStyles.getPropertyValue('--chart-tooltip-background').trim();
+    const chartTooltipTitleColor = rootStyles.getPropertyValue('--chart-tooltip-title-color').trim();
+    const chartTooltipBodyColor = rootStyles.getPropertyValue('--chart-tooltip-body-color').trim();
 
-        // Likes Chart
-        const ctxLikes = document.getElementById('likesChart').getContext('2d');
-        new Chart(ctxLikes, {
-            type: 'bar',
-            data: {
-                labels: postTypes,
-                datasets: [{
-                    label: 'Likes',
-                    data: likesData,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
+    // Safely pass the data to JavaScript
+    const postTypes = JSON.parse('{{ post_types|tojson|safe }}');
+    const likesData = JSON.parse('{{ likes_data|tojson|safe }}');
+    const sharesData = JSON.parse('{{ shares_data|tojson|safe }}');
+    const commentsData = JSON.parse('{{ comments_data|tojson|safe }}');
+
+    // Log data to the console for debugging
+    console.log('Post Types:', postTypes);
+    console.log('Likes Data:', likesData);
+    console.log('Shares Data:', sharesData);
+    console.log('Comments Data:', commentsData);
+
+    // Calculate averages for likes, shares, and comments
+    const avgLikes = likesData.reduce((acc, val) => acc + val, 0) / likesData.length;
+    const avgShares = sharesData.reduce((acc, val) => acc + val, 0) / sharesData.length;
+    const avgComments = commentsData.reduce((acc, val) => acc + val, 0) / commentsData.length;
+
+    console.log('Average Likes:', avgLikes);
+    console.log('Average Shares:', avgShares);
+    console.log('Average Comments:', avgComments);
+
+    // Data for the Pie Chart (averages of Likes, Shares, and Comments)
+    const avgData = [avgLikes, avgShares, avgComments];
+    const avgLabels = ['Average Likes', 'Average Shares', 'Average Comments'];
+
+    // Likes Chart
+    const ctxLikes = document.getElementById('likesChart').getContext('2d');
+    new Chart(ctxLikes, {
+        type: 'bar',
+        data: {
+            labels: postTypes,
+            datasets: [{
+                label: 'Likes',
+                data: likesData,
+                backgroundColor: chartBlue, // Using CSS variable
+                borderColor: chartBlueBorder, // Using CSS variable
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    ticks: {
+                        color: 'white',
+                    },
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    ticks: {
+                        color: 'white',
+                    },
+                }
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+            plugins: {
+                tooltip: {
+                    backgroundColor: chartTooltipBackground, // Using CSS variable
+                    titleColor: chartTooltipTitleColor, // Using CSS variable
+                    bodyColor: chartTooltipBodyColor, // Using CSS variable
                 }
             }
-        });
+        }
+    });
 
-        // Shares Chart
-        const ctxShares = document.getElementById('sharesChart').getContext('2d');
-        new Chart(ctxShares, {
-            type: 'bar',
-            data: {
-                labels: postTypes,
-                datasets: [{
-                    label: 'Shares',
-                    data: sharesData,
-                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                    borderColor: 'rgba(255, 159, 64, 1)',
-                    borderWidth: 1
-                }]
+    // Shares Chart
+    const ctxShares = document.getElementById('sharesChart').getContext('2d');
+    new Chart(ctxShares, {
+        type: 'bar',
+        data: {
+            labels: postTypes,
+            datasets: [{
+                label: 'Shares',
+                data: sharesData,
+                backgroundColor: chartOrange, // Using CSS variable
+                borderColor: chartOrangeBorder, // Using CSS variable
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    ticks: {
+                        color: 'white',
+                    },
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    ticks: {
+                        color: 'white',
+                    },
+                }
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+            plugins: {
+                tooltip: {
+                    backgroundColor: chartTooltipBackground, // Using CSS variable
+                    titleColor: chartTooltipTitleColor, // Using CSS variable
+                    bodyColor: chartTooltipBodyColor, // Using CSS variable
                 }
             }
-        });
+        }
+    });
 
-        // Comments Chart
-        const ctxComments = document.getElementById('commentsChart').getContext('2d');
-        new Chart(ctxComments, {
-            type: 'bar',
-            data: {
-                labels: postTypes,
-                datasets: [{
-                    label: 'Comments',
-                    data: commentsData,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
+    // Comments Chart
+    const ctxComments = document.getElementById('commentsChart').getContext('2d');
+    new Chart(ctxComments, {
+        type: 'bar',
+        data: {
+            labels: postTypes,
+            datasets: [{
+                label: 'Comments',
+                data: commentsData,
+                backgroundColor: chartGreen, // Using CSS variable
+                borderColor: chartGreenBorder, // Using CSS variable
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    ticks: {
+                        color: 'white',
+                    },
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    ticks: {
+                        color: 'white',
+                    },
+                }
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+            plugins: {
+                tooltip: {
+                    backgroundColor: chartTooltipBackground, // Using CSS variable
+                    titleColor: chartTooltipTitleColor, // Using CSS variable
+                    bodyColor: chartTooltipBodyColor, // Using CSS variable
                 }
             }
-        });
+        }
+    });
+
+    // Combined Pie Chart
+    const ctxPie = document.getElementById('combinedPieChart').getContext('2d');
+    const combinedPieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: avgLabels,
+            datasets: [{
+                label: 'Average Engagement',
+                data: avgData,
+                backgroundColor: [
+                    chartBlue,  // Using CSS variable
+                    chartOrange,  // Using CSS variable
+                    chartGreen,  // Using CSS variable
+                ],
+                borderColor: [
+                    chartBlueBorder,  // Using CSS variable
+                    chartOrangeBorder,  // Using CSS variable
+                    chartGreenBorder,  // Using CSS variable
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    backgroundColor: chartTooltipBackground, // Using CSS variable
+                    titleColor: chartTooltipTitleColor, // Using CSS variable
+                    bodyColor: chartTooltipBodyColor, // Using CSS variable
+                }
+            }
+        }
+    });
 
         // Chatbot Functionality
         document.getElementById('send-btn').addEventListener('click', sendMessage);
@@ -290,6 +346,17 @@
             chatBox.appendChild(messageDiv);
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to latest message
         }
+
+        window.onload = function() {
+    var animation = lottie.loadAnimation({
+        container: document.getElementById('lottie-container'), // The container for the animation
+        renderer: 'svg', // Renderer type: SVG, Canvas, or HTML
+        loop: true, // Loop the animation
+        autoplay: true, // Start playing immediately
+        path: "{{ url_for('static', filename='assets/bot.json') }}" // Flask's static path
+    });
+};
+
     </script>
 
 </body>

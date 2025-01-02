@@ -1,0 +1,452 @@
+* {
+	box-sizing: border-box;
+  }
+  
+  /* Custom scrollbars */
+  :root {
+	  --scrollbar-primary: #000000;
+	  --scrollbar-secondary: rgba(255, 255, 255, 0.596);
+      --chart-blue: rgba(54, 162, 235, 0.2);
+      --chart-blue-border: rgba(54, 162, 235, 1);
+      --chart-orange: rgba(255, 159, 64, 0.2);
+      --chart-orange-border: rgba(255, 159, 64, 1);
+      --chart-green: rgba(75, 192, 192, 0.2);
+      --chart-green-border: rgba(75, 192, 192, 1);
+      --chart-background: rgba(255, 255, 255, 0.1);
+      --chart-tooltip-background: rgba(0, 0, 0, 0.7);
+      --chart-tooltip-title-color: white;
+      --chart-tooltip-body-color: white;
+  }
+  
+  /* Firefox */
+  * {
+	  scrollbar-width: thin;
+	  scrollbar-color: var(--scrollbar-secondary) var(--scrollbar-primary);
+  }
+  
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+	  width: 15px;
+  }
+	
+  *::-webkit-scrollbar-track {
+	  background: var(--scrollbar-primary);
+	  border-radius: 0px;
+  }
+	
+  *::-webkit-scrollbar-thumb {
+	  background-color: var(--scrollbar-secondary);
+	  border-radius: 14px;
+	  border: 3px solid var(--scrollbar-primary);
+  }
+  
+html {
+	  height: 90%;
+}
+body {
+    font-family: 'Roboto', 'Oxygen', 'Lobster', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: rgba(223, 242, 247, .5);
+    height: 100%;
+    margin: 0;
+    background: rgb(233,233,233);
+    background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(0,0,0,0.9556197478991597) 100%);
+}
+
+/* header {
+    background: rgba(255, 255, 255, 0.596);
+    color: black;
+    margin-top: 2%;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 16px 40px 6px 40px;
+    height: 80px;
+    border-radius: 100px;
+    box-shadow: 0 0 5px black, 0 0 25px black;
+    opacity: 0;
+  animation: fadeIn 1s ease forwards, floatImage 3s ease-in-out infinite;
+  animation-delay: 1.1s, 2.1s;
+} */
+
+header {
+    background: rgba(0, 0, 0, 0.596);
+    color: black;
+    margin-top: 2%;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 16px 40px 6px 40px;
+    height: 80px;
+    border-radius: 100px;
+    box-shadow: 0 0 5px black, 0 0 25px black;
+    opacity: 0;
+  animation: fadeIn 1s ease forwards, floatImage 3s ease-in-out infinite;
+  animation-delay: 1.1s, 2.1s;
+}
+
+header h1 {
+    display: inline;
+    justify-content: space-between;
+    font-family: "Lobster", cursive;
+    font-weight: bolder;
+    font-size: 32px;
+    float: left;
+    margin-top: 5px;
+    /* color: #000000c7; */
+    color: rgb(212, 212, 212);
+    opacity: 0;
+  animation: slideLeft 1s ease forwards;
+  animation-delay: 1.2s;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  animation: fadeIn 1s ease forwards, floatImage 3s ease-in-out infinite;
+  animation-delay: 1.1s, 2.1s;
+    
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 50vh;
+}
+
+.chat-box {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: scroll;
+    background: #fafafa;
+    border-bottom: 1px solid #ddd;
+}
+
+.message {
+    margin: 10px 0;
+    padding: 12px 20px;
+    border-radius: 15px;
+    max-width: 75%;
+    word-wrap: break-word;
+    color: black;
+}
+
+.bot-message {
+    background-color: #ffffff;
+    color: #000000;
+    margin-left: 20px;
+    align-self: flex-start;
+}
+
+.user-message {
+    background-color: #ffffff;
+    color: #1e3c72;
+    margin-right: 20px;
+    align-self: flex-end;
+}
+
+.input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #fff;
+}
+
+.input-container input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+}
+
+/* Glassmorphism effect for the chat container */
+.chat-container {
+    background: rgba(0, 0, 0, 0.596); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Apply blur effect to the background */
+    border-radius: 15px; /* Rounded corners */
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Glassmorphism effect for the message box */
+.chat-box {
+    background: rgba(255, 255, 255, 0.459);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto; /* Allow scrolling for long chats */
+}
+
+/* Glassmorphism effect for the input box */
+.input-container {
+    background: rgba(255, 255, 255, 0.459);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Input box styling */
+#user-input {
+    background: rgba(255, 255, 255, 0.459);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 10px;
+    width: 100%;
+    color: rgb(0, 0, 0); /* White text */
+    font-size: 16px;
+}
+
+/* Send button styling */
+.send-btn {
+    background: rgba(0, 0, 0, 0.712);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.send-btn:hover {
+    background: rgb(0, 0, 0);
+    box-shadow: 0 0 5px black,
+		0 0 25px black, 0 0 50px black,
+		0 0 100px black;
+}
+
+.typing-indicator {
+    font-style: italic;
+    color: #000000;
+}
+
+.lottie-container {
+    filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.5));
+    transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.lottie-container:hover {
+    filter: drop-shadow(0 0 10px black) drop-shadow(0 0 20px black) drop-shadow(0 0 100px black);
+    transform: scale(1.1);
+}
+
+.row1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.row2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+/* Container to hold the charts in 2x2 grid layout */
+.chart-wrapper {
+    display: grid;
+    margin-left: 40px;
+    margin-right: 40px;
+    grid-template-columns: repeat(2, 1fr);  /* Create 2 equal columns */
+    gap: 40px;                              /* Space between the charts */
+    opacity: 0;
+    animation: fadeIn 1s ease forwards, floatImage 3s ease-in-out infinite;
+    animation-delay: 1.1s, 2.1s;
+}
+
+/* Glassmorphism effect on the chart container */
+.chart-container {
+    background: rgba(0, 0, 0, 0.596);  /* Light, semi-transparent white */
+    border-radius: 15px;
+    backdrop-filter: blur(10px);            /* Background blur for glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.2);  /* Light border */
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden;                        /* Ensure content doesn't spill outside */
+}
+
+/* Specific size for the pie chart to avoid it being too large */
+#combinedPieChart {
+    width: 50%;  /* Limit the width of the pie chart */
+    height: 100px;  /* Set a fixed height for the pie chart */
+    margin: 0 auto;  /* Center the pie chart */
+}
+
+/* Ensure other charts are responsive */
+canvas {
+    background: rgba(255, 255, 255, 0);  /* Transparent white */
+    border-radius: 12px;                     /* Smooth corners on canvas */
+    width: 100%;                             /* Make canvas fill the container */
+    height: auto;                            /* Auto height to maintain aspect ratio */
+}
+
+
+
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.596);
+    color: white;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards, floatImage 3s ease-in-out infinite;
+    animation-delay: 1.1s, 2.1s;
+}
+
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }    
+}
+
+@keyframes slideLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }    
+}
+
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 14px; /* Adjust font size for readability */
+    }
+
+    header {
+        margin: 10px 20px; /* Reduce margins */
+        padding: 10px 20px; /* Adjust padding */
+        height: auto; /* Allow header height to adapt */
+        display: flex; /* Use flexbox for alignment */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+        text-align: center; /* Ensure multiline text is centered */
+    }
+    
+    header h1 {
+        font-size: 24px; /* Scale down header font size */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove unnecessary padding */
+    }
+
+    .container {
+        padding: 10px; /* Reduce padding for better fit */
+    }
+
+    .chat-container {
+        max-width: 100%; /* Take full width of mobile screens */
+        height: 60vh; /* Adjust height for smaller screens */
+        margin: 0 auto; /* Center the container */
+    }
+
+    .chat-box {
+        padding: 10px; /* Reduce padding */
+        max-height: 50vh; /* Limit height */
+    }
+
+    .input-container {
+        flex-direction: column; /* Stack input and button vertically */
+        padding: 5px;
+    }
+
+    .input-container input {
+        width: 100%; /* Take full width */
+        margin-bottom: 10px; /* Add space between input and button */
+    }
+
+    .send-btn {
+        width: 100%; /* Full width button */
+        padding: 10px;
+    }
+
+    .chart-wrapper {
+        grid-template-columns: 1fr; /* Single column for charts */
+        gap: 20px; /* Reduce space between charts */
+        margin: 10px 20px; /* Reduce margins */
+    }
+
+    .chart-container {
+        padding: 10px; /* Adjust padding */
+    }
+
+    #combinedPieChart {
+        width: 80%; /* Adjust size for mobile */
+        height: auto;
+    }
+
+    footer {
+        padding: 10px; /* Adjust padding */
+        font-size: 12px; /* Smaller text */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    header {
+        font-size: 12px; /* Even smaller font for very small screens */
+    }
+
+    .chat-container {
+        height: 50vh; /* Reduce height for extra small screens */
+    }
+
+    .input-container {
+        padding: 5px;
+    }
+
+    .send-btn {
+        font-size: 14px; /* Smaller font size for button */
+    }
+}
