@@ -94,17 +94,17 @@ The web interface allows users to:
     Interact with a chatbot to analyze post performance.
     Receive insights from the chatbot based on the data.
 
-Demo Video
+## Demo Video
 
 Here’s a link to the demo video where I explain how the project works:
 
-Watch Demo Video
+[Watch the Demo Video](https://youtu.be/mh8OztiQgt8?si=kvvuiI4uTjVFzHo7)
 
 In the video, I explain:
+- How Langflow was used to create the workflow.
+- How DataStax Astra DB is used for data storage and querying.
+- How Groq generates insights from the data.
 
-    How Langflow was used to create the workflow.
-    How DataStax Astra DB is used for data storage and querying.
-    How Groq generates insights based on the social media data.
 
 Project Links
 
