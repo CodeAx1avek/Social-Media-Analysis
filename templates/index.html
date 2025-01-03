@@ -284,59 +284,56 @@
                 sendMessage();
             }
         });
-
         function sendMessage() {
-            const userMessage = document.getElementById('user-input').value.trim();
-            if (userMessage === '') return;
+    const userMessage = document.getElementById('user-input').value.trim();
+    if (userMessage === '') return;
 
-            // Add user message to chatbox
-            appendMessage(userMessage, 'user-message');
-            document.getElementById('user-input').value = ''; // Clear input field
+    appendMessage(userMessage, 'user-message');
+    document.getElementById('user-input').value = ''; // Clear input field
 
-            // Show bot typing indicator
-            const typingIndicator = document.createElement('div');
-            typingIndicator.classList.add('message', 'typing-indicator');
-            typingIndicator.textContent = 'Bot is typing...';
-            document.getElementById('chat-box').appendChild(typingIndicator);
-            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight; // Scroll to latest message
+    const typingIndicator = document.createElement('div');
+    typingIndicator.classList.add('message', 'typing-indicator');
+    typingIndicator.textContent = 'Bot is typing...';
+    document.getElementById('chat-box').appendChild(typingIndicator);
+    document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight; // Scroll to latest message
 
-            // Random responses if the message length is between 4 and 5 characters
-            if (userMessage.length >= 4 && userMessage.length <= 5) {
-                const responses = [
-                    "Hi there! How can I assist you?",
-                    "How can I help you with my analysis skills?",
-                    "I specialize in analyzing social media data. What can I do for you?",
-                    "Feel free to ask anything related to social media analysis!"
-                ];
+    // Random response for short inputs (5 characters or less)
+    if (userMessage.length <= 5) {
+        const responses = [
+            "Hi there! How can I assist you?",
+            "How can I help you with my analysis skills?",
+            "I specialize in analyzing social media data. What can I do for you?",
+            "Feel free to ask anything related to social media analysis!"
+        ];
 
-                // Pick a random response
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        // Pick a random response
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
-                // Send the random response
-                appendMessage(randomResponse, 'bot-message');
-                document.querySelector('.typing-indicator').remove(); // Hide typing indicator
-                return;
-            }
+        // Send the random response
+        appendMessage(randomResponse, 'bot-message');
+        document.querySelector('.typing-indicator').remove(); // Hide typing indicator
+        return;
+    }
 
-            // For longer messages or other cases, send to backend for processing
-            fetch('/chatbot', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: userMessage })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const botMessage = data.reply || 'Sorry, I did not understand that.';
-                appendMessage(botMessage, 'bot-message');
-                document.querySelector('.typing-indicator').remove(); // Hide typing indicator
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.querySelector('.typing-indicator').remove(); // Hide typing indicator
-            });
-        }
+    // For longer messages or other cases, send to backend for processing
+    fetch('/chatbot', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: userMessage })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const botMessage = data.reply || 'Sorry, I did not understand that.';
+        appendMessage(botMessage, 'bot-message');
+        document.querySelector('.typing-indicator').remove(); // Hide typing indicator
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.querySelector('.typing-indicator').remove(); // Hide typing indicator
+    });
+}
 
         function appendMessage(message, messageType) {
             const chatBox = document.getElementById('chat-box');
